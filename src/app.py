@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 from services.movie_service import get_movie_details
 from services.weather_service import get_weather
-
+from services.webhook_service import send_to_webhook
 app = Flask(__name__)
 
 @app.route("/", methods=["GET", "POST"])
@@ -34,7 +34,9 @@ def index():
                 "overview": movie["overview"],
             }
             
-            # Optionally, send combined_data to a WebHook here
+            # Send data to webhook and log success
+            response_code = send_to_webhook(combined_data)
+            print(f"Data sent to webhook successfully. Response Code: {response_code}")
             
             return jsonify(combined_data)
         
