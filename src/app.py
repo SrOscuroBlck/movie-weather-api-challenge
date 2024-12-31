@@ -1,4 +1,9 @@
 import os
+import sys
+
+# Add the project root to the Python path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from flask import Flask, render_template, request
 from services.movie_service import get_movie_details
 from services.weather_service import get_weather
