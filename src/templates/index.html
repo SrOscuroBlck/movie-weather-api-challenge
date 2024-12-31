@@ -95,10 +95,12 @@
     <p><strong>Release Date:</strong> {{ result.release_date }}</p>
     <p><strong>Overview:</strong> {{ result.overview }}</p>
     <p><strong>Weather:</strong> {{ result.weather_summary }}</p>
+    <p><strong>Min Temperature:</strong> {{ result.min_temp }}°C</p>
+    <p><strong>Max Temperature:</strong> {{ result.max_temp }}°C</p>
     {% if result.webhook_error %}
-    <p style="color: red;"><strong>Webhook Error:</strong> {{ result.webhook_error }}</p>
+    <p style="color: red;"><strong>Error:</strong> {{ result.webhook_error }}</p>
     {% else %}
-    <p style="color: green;"><strong>Webhook Status:</strong> {{ result.webhook_status }}</p>
+    <p style="color: green;"><strong>Status:</strong> {{ result.webhook_status }}</p>
     {% endif %}
     {% endif %}
 </div>
