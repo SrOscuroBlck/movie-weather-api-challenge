@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, request
 from services.movie_service import get_movie_details
 from services.weather_service import get_weather
@@ -45,4 +46,5 @@ def index():
     return render_template("index.html", result=result)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.getenv("PORT", 5000))  # Use the PORT environment variable or default to 5000
+    app.run(host="0.0.0.0", port=port, debug=False)
