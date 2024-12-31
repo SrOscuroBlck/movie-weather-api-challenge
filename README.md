@@ -57,6 +57,8 @@ This application integrates two APIs to fetch and combine movie data with weathe
    python src/app.py
    ```
 
+   - If running in development mode, set `debug=True` in `src/app.py` for better debugging output.
+
 ---
 
 ## Usage
@@ -68,6 +70,16 @@ This application integrates two APIs to fetch and combine movie data with weathe
 3. View the combined movie and weather data.
 
 4. The combined data will also be sent to the webhook.
+
+---
+
+## Project Restrictions
+1. **Development Use Only:** This project is intended for development and demonstration purposes.
+   - The webhook endpoint (`https://eo9m0nh4z7lacho.m.pipedream.net`) may be unavailable.
+
+2. **Open-Meteo Limitations:** Weather data is only available for the past 92 days. If a movie's release date exceeds this range, the server will respond with an error.
+
+3. **Error Handling:** Errors from external APIs (TMDB, Open-Meteo, or the webhook) are gracefully handled and displayed in the application.
 
 ---
 
@@ -92,6 +104,8 @@ movie-weather-api-challenge/
 
 ## Testing
 - To test the application locally, follow the installation instructions.
+- Ensure the TMDB API token is set correctly in the `.env` file.
+- For development, enable `debug=True` in `src/app.py` for detailed logs.
 
 ---
 
