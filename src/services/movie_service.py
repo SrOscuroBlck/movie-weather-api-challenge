@@ -21,39 +21,38 @@ def get_movie_details(title):
     Raises:
         ValueError: If the movie is not found or there are issues with the API request.
     """
-    search_url = f"https://api.themoviedb.org/3/search/movie?query={title}"
-    headers = {
-        "Authorization": f"Bearer {TMDB_API_TOKEN}",
-        "Content-Type": "application/json;charset=utf-8"
-    }
+    try:
+        search_url = f"https://api.themoviedb.org/3/search/movie?query={title}"
+        headers = {
+            "Authorization": f"Bearer {TMDB_API_TOKEN}",
+            "Content-Type": "application/json;charset=utf-8"
+        }
 
-    # Search for the movie by title
-    response = requests.get(search_url, headers=headers)
-    response.raise_for_status()
-    movies = response.json().get("results", [])
-    if not movies:
-        raise ValueError("Movie not found.")
-    
-    # Fetch detailed information for the first result
-    movie_id = movies[0]["id"]
-    detail_url = f"https://api.themoviedb.org/3/movie/{movie_id}"
-    response = requests.get(detail_url, headers=headers)
-    response.raise_for_status()
-    movie_details = response.json()
+        response = requests.get(search_url, headers=headers)
+        response.raise_for_status()
+        movies = response.json().get("results", [])
+        if not movies:
+            raise ValueError("Movie not found.")
 
-    # Map genre IDs to genre names
-    genre_mapping = get_genres()
-    genres = [genre_mapping.get(genre["id"], "Unknown") for genre in movie_details.get("genres", [])]
+        movie_id = movies[0]["id"]
+        detail_url = f"https://api.themoviedb.org/3/movie/{movie_id}"
+        response = requests.get(detail_url, headers=headers)
+        response.raise_for_status()
+        movie_details = response.json()
 
-    # Return relevant details about the movie
-    return {
-        "title": movie_details["title"],
-        "release_date": movie_details["release_date"],
-        "genres": genres,
-        "overview": movie_details.get("overview", "No overview available."),
-        "runtime": movie_details.get("runtime", "N/A"),
-    }
+        genre_mapping = get_genres()
+        genres = [genre_mapping.get(genre["id"], "Unknown") for genre in movie_details.get("genres", [])]
 
+        return {
+            "title": movie_details["title"],
+            "release_date": movie_details["release_date"],
+            "genres": genres,
+            "overview": movie_details.get("overview", "No overview available."),
+            "runtime": movie_details.get("runtime", "N/A"),
+        }
+    except (requests.RequestException, ValueError) as e:
+        print(f"Error fetching movie details: {e}")
+        raise ValueError("Unable to fetch movie details. Please try again later.")
 
 GENRE_CACHE = None
 

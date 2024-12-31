@@ -23,16 +23,11 @@ def index():
     result = None
     if request.method == "POST":
         title = request.form["title"]
-        
         try:
-            # Fetch movie data
             movie = get_movie_details(title)
             release_date = movie["release_date"]
-
-            # Fetch weather data for Cali, Colombia
             weather = get_weather(lat=3.4372, lon=-76.5225, date=release_date)
 
-            # Combine movie and weather data
             result = {
                 "title": movie["title"],
                 "genres": movie["genres"],
@@ -42,18 +37,17 @@ def index():
                 "max_temp": weather["max_temp"],
                 "weather_summary": weather["summary"],
             }
-            
-            # Send data to webhook and log success
+
             webhook_response = send_to_webhook(result)
             if isinstance(webhook_response, str) and webhook_response.startswith("Error"):
                 result["webhook_error"] = webhook_response
             else:
                 result["webhook_status"] = f"Data sent to webhook successfully. Response Code: {webhook_response}"
-        
         except ValueError as e:
             result = {"error": str(e)}
 
     return render_template("index.html", result=result)
+
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 5000))  # Use the PORT environment variable or default to 5000
