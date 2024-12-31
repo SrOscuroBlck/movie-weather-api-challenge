@@ -1,12 +1,100 @@
-<DOCTYPE html>
-<html>
-    <head>
-        <title>Movie & Weather API Challenge</title>
-    </head>
-    <body>
-        <form method="POST">
-            <input type="text" name="title" placeholder="Enter title">
-            <button type="submit">Submit</button>
-        </form>
-    </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie & Weather API Challenge</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            max-width: 600px;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .result h2 {
+            margin: 0 0 10px 0;
+            color: #444;
+        }
+        .result p {
+            margin: 5px 0;
+            color: #555;
+        }
+        .loader {
+            display: none;
+            border: 8px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 8px solid #007bff;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+    <script>
+        function showLoader() {
+            document.getElementById("loader").style.display = "block";
+        }
+    </script>
+</head>
+<body>
+    <h1>Movie & Weather API Challenge</h1>
+    <form method="POST" onsubmit="showLoader()">
+        <input type="text" name="title" placeholder="Enter movie title" required>
+        <button type="submit">Search</button>
+    </form>
+    <div id="loader" class="loader"></div>
+    {% if result %}
+    <div class="result">
+        <h2>{{ result.title }}</h2>
+        <p><strong>Genres:</strong> {{ result.genres | join(', ') }}</p>
+        <p><strong>Release Date:</strong> {{ result.release_date }}</p>
+        <p><strong>Overview:</strong> {{ result.overview }}</p>
+        <p><strong>Weather:</strong> {{ result.weather.summary }}</p>
+        <p><strong>Min Temperature:</strong> {{ result.weather.min_temp }}°C</p>
+        <p><strong>Max Temperature:</strong> {{ result.weather.max_temp }}°C</p>
+    </div>
+    {% endif %}
+</body>
 </html>

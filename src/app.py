@@ -1,7 +1,8 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request
 from services.movie_service import get_movie_details
 from services.weather_service import get_weather
 from services.webhook_service import send_to_webhook
+
 app = Flask(__name__)
 
 @app.route("/", methods=["GET", "POST"])
@@ -11,9 +12,9 @@ def index():
     fetches relevant movie details and associated weather data, and combines the results.
     
     Returns:
-        JSON: Combined movie and weather data if a POST request is made.
-        HTML: The main page if a GET request is made.
+        Rendered HTML: Displays movie and weather details on the main page.
     """
+    result = None
     if request.method == "POST":
         title = request.form["title"]
         
@@ -26,24 +27,22 @@ def index():
             weather = get_weather(lat=3.4372, lon=-76.5225, date=release_date)
 
             # Combine movie and weather data
-            combined_data = {
+            result = {
                 "title": movie["title"],
                 "genres": movie["genres"],
                 "release_date": release_date,
-                "weather": weather,
                 "overview": movie["overview"],
+                "weather": weather,
             }
             
             # Send data to webhook and log success
-            response_code = send_to_webhook(combined_data)
+            response_code = send_to_webhook(result)
             print(f"Data sent to webhook successfully. Response Code: {response_code}")
-            
-            return jsonify(combined_data)
         
         except ValueError as e:
-            return jsonify({"error": str(e)}), 400
+            result = {"error": str(e)}
 
-    return render_template("index.html")
+    return render_template("index.html", result=result)
 
 if __name__ == "__main__":
     app.run(debug=True)
