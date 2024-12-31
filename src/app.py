@@ -5,9 +5,9 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from flask import Flask, render_template, request
-from services.movie_service import get_movie_details
-from services.weather_service import get_weather
-from services.webhook_service import send_to_webhook
+from src.services.movie_service import get_movie_details
+from src.services.weather_service import get_weather
+from src.services.webhook_service import send_to_webhook
 
 app = Flask(__name__)
 
