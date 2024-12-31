@@ -38,7 +38,9 @@ def index():
                 "genres": movie["genres"],
                 "release_date": release_date,
                 "overview": movie["overview"],
-                "weather": weather,
+                "min_temp": weather["min_temp"],
+                "max_temp": weather["max_temp"],
+                "weather_summary": weather["summary"],
             }
             
             # Send data to webhook and log success
