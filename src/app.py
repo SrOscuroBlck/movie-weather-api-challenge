@@ -44,8 +44,11 @@ def index():
             }
             
             # Send data to webhook and log success
-            response_code = send_to_webhook(result)
-            print(f"Data sent to webhook successfully. Response Code: {response_code}")
+            webhook_response = send_to_webhook(result)
+            if isinstance(webhook_response, str) and webhook_response.startswith("Error"):
+                result["webhook_error"] = webhook_response
+            else:
+                result["webhook_status"] = f"Data sent to webhook successfully. Response Code: {webhook_response}"
         
         except ValueError as e:
             result = {"error": str(e)}

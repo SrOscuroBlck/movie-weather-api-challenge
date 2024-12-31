@@ -86,15 +86,23 @@
     </form>
     <div id="loader" class="loader"></div>
     {% if result %}
-    <div class="result">
-        <h2>{{ result.title }}</h2>
-        <p><strong>Genres:</strong> {{ result.genres | join(', ') }}</p>
-        <p><strong>Release Date:</strong> {{ result.release_date }}</p>
-        <p><strong>Overview:</strong> {{ result.overview }}</p>
-        <p><strong>Weather:</strong> {{ result.weather.summary }}</p>
-        <p><strong>Min Temperature:</strong> {{ result.weather.min_temp }}°C</p>
-        <p><strong>Max Temperature:</strong> {{ result.weather.max_temp }}°C</p>
-    </div>
+<div class="result">
+    {% if result.error %}
+    <p style="color: red;"><strong>Error:</strong> {{ result.error }}</p>
+    {% else %}
+    <h2>{{ result.title }}</h2>
+    <p><strong>Genres:</strong> {{ result.genres | join(', ') }}</p>
+    <p><strong>Release Date:</strong> {{ result.release_date }}</p>
+    <p><strong>Overview:</strong> {{ result.overview }}</p>
+    <p><strong>Weather:</strong> {{ result.weather_summary }}</p>
+    {% if result.webhook_error %}
+    <p style="color: red;"><strong>Webhook Error:</strong> {{ result.webhook_error }}</p>
+    {% else %}
+    <p style="color: green;"><strong>Webhook Status:</strong> {{ result.webhook_status }}</p>
     {% endif %}
+    {% endif %}
+</div>
+{% endif %}
+
 </body>
 </html>
